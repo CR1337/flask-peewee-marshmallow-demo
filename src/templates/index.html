@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick and Dirty Demo</title>
+    <script src="static/vue.global.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <label for="id_input">Route:</label>
+        <select v-model="selected_route" id="route_select">
+            <option v-for="route in routes">[[ route ]]</option>
+        </select>
+    </div>
+    <div>
+        <label for="id_input">Id:</label>
+        <input type="number" v-model="selected_id" id="id_input" min="0" step="1">
+    </div>
+    <br>
+    <div v-for="method in methods">
+        <input type="radio" v-model="selected_method" :value="method" :id="'radio_' + method">
+        <label :for="'radio_' + method">[[ method ]]</label>
+    </div>
+    <br>
+    <div>
+        <label for="body">Body:</label><br>
+        <textarea v-model="body" id="body" rows="16" cols="64"></textarea>
+    </div>
+    <div>
+        <button @click="submit()">Submit</button>
+        <button @click="clear_body()">Clear</button>
+    </div>
+    <br>
+    <div>
+        <label for="status">Status Code:</label><br>
+        <input v-model="status" id="status" readonly></textarea>
+    </div>
+    <div>
+        <label for="response">Response:</label><br>
+        <textarea v-model="response" id="response" rows="16" cols="64" readonly></textarea>
+    </div>
+    <div>
+        <button @click="clear_response()">Clear</button>
+    </div>
+
+
+
+</div>
+</body>
+</html>
+
+<script>
+    const { createApp } = Vue;
+    const app = createApp({
+        data() {
+            return {
+                selected_route: "authors",
+                selected_id: 0,
+                routes: [
+                    "authors", "author",
+                    "books", "book",
+                    "magazines", "magazine",
+                    "readables", "readable"
+                ],
+                selected_method: 'GET',
+                methods: [
+                    'GET', 'POST', 'PUT', 'DELETE'
+                ],
+                body: "",
+                status: "",
+                response: ""
+            }
+        },
+        methods: {
+            submit() {
+                let route = "http://localhost:5000/" + this.selected_route;
+                if (!this.selected_route.endsWith("s")) {
+                    route += "/" + this.selected_id.toString();
+                }
+
+                let init;
+                if (this.selected_method === "GET") {
+                    init = {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        method: this.selected_method
+                    }
+                } else {
+                    init = {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        method: this.selected_method,
+                        body: this.body
+                    }
+                }
+
+                fetch(route, init)
+                .then(r => {
+                    this.status = r.status;
+                    return r.json();
+                }).then(data => {
+                    this.response = JSON.stringify(data, null, 4);
+                });
+            },
+
+            clear_body() {
+                this.body = "";
+            },
+
+            clear_response() {
+                this.status = "";
+                this.response = "";
+            }
+        },
+        delimiters: ['[[',']]']
+    }).mount("#app");
+</script>
