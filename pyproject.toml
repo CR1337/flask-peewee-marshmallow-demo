@@ -11,7 +11,6 @@ python = "^3.10"
 Flask = "^2.2.3"
 peewee = "^3.16.0"
 marshmallow = "^3.19.0"
-flask-peewee = "^3.0.4"
 
 
 [build-system]
