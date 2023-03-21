@@ -5,3 +5,8 @@ This demo shows the interaction of flask, peewee and marshmallow. It implements 
 
 ## Usage
 Run `poetry run python3 src/run.py`. The frontend will automatically open in your browser.
+
+## Further reading
+[Peewee Quickstart](https://docs.peewee-orm.com/en/latest/peewee/quickstart.html)
+
+[Marshmallow Quickstart](https://marshmallow.readthedocs.io/en/stable/quickstart.html)
