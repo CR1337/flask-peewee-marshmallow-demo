@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "flask-peewee-marshmallow-demo"
+version = "0.1.0"
+description = ""
+authors = ["CR1337 <captain_2@gmx.de>"]
+readme = "README.md"
+packages = [{include = "flask_peewee_marshmallow_demo"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.2.3"
+peewee = "^3.16.0"
+marshmallow = "^3.19.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
