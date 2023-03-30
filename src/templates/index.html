@@ -7,14 +7,18 @@
 <body>
 <div id="app">
     <div>
-        <label for="id_input">Route:</label>
+        <label for="route_select">Route:</label>
         <select v-model="selected_route" id="route_select">
             <option v-for="route in routes">[[ route ]]</option>
         </select>
     </div>
-    <div>
-        <label for="id_input">Id:</label>
-        <input type="number" v-model="selected_id" id="id_input" min="0" step="1">
+    <div v-if="!selected_route.endsWith('s')">
+        <label for="id1_input">Id1:</label>
+        <input v-model="selected_id1" id="id1_input">
+    </div>
+    <div v-if="selected_route=='author-x-hobby'">
+        <label for="id2_input">Id2:</label>
+        <input v-model="selected_id2" id="id2_input">
     </div>
     <br>
     <div v-for="method in methods">
@@ -55,9 +59,12 @@
         data() {
             return {
                 selected_route: "authors",
-                selected_id: 0,
+                selected_id1: "",
+                selected_id2: "",
                 routes: [
+                    "hobbies", "hobby",
                     "authors", "author",
+                    "authors-x-hobbies", "author-x-hobby",
                     "books", "book",
                     "magazines", "magazine",
                     "readables", "readable"
@@ -75,7 +82,10 @@
             submit() {
                 let route = "http://localhost:5000/" + this.selected_route;
                 if (!this.selected_route.endsWith("s")) {
-                    route += "/" + this.selected_id.toString();
+                    route += "/" + this.selected_id1.toString();
+                    if (this.selected_route == "author-x-hobby") {
+                        route += "/" + this.selected_id2.toString();
+                    }
                 }
 
                 let init;
